@@ -1,0 +1,22 @@
+{
+  "name": "node-pet-project",
+  "version": "1.0.0",
+  "description": "Node pet project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "node app.js",
+    "prettier": "npx prettier --write ."
+  },
+  "author": "Artem Cherenkov",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.3",
+    "prettier": "2.2.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}
