@@ -8,7 +8,7 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.postAddProduct = (req, res) => {
-  const product = new Product(req.body.title);
+  const product = new Product(req.body);
   product.save(product);
   res.redirect("/");
 };
