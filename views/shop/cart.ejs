@@ -1,11 +1,29 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css" />
 </head>
 
 <body>
     <%- include('../includes/navigation.ejs') %>
 
     <main>
-        <h1>Cart</h1>
+        <% if(cart && products.length) { %>
+            <h2>Cart full price: <%= cart.totalPrice %></h2>
+            <ul>
+                <% products.forEach((product) => { %>
+                    <li class="cart-product">
+                        <h2 class="cart-product-title"><%= product.title %></h2>
+                        <img class="cart-product-image" src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                        <span class="cart-product-qty">Count: <%= product.qty %></span>
+                        <form action="/cart-delete-item" method="post">
+                            <input type="hidden" name="productId" value="<%= product.id %>">
+                            <button class="btn" type="submit">-</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <h2>Cart is empty</h2>
+        <% } %>
     </main>
 
-<%- include('../includes/end.ejs') %>
+    <%- include('../includes/end.ejs') %>

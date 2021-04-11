@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { getFormattedPrice } = require("../utils/common");
 
 const pathToCartData = path.join(
   path.dirname(require.main.filename),
@@ -32,6 +33,7 @@ module.exports = class Cart {
         cart.products[existingProductIndex] = updatedProduct;
       }
       cart.totalPrice += productPrice;
+      cart.totalPrice = Number(parseFloat(cart.totalPrice).toFixed(2));
 
       fs.writeFile(pathToCartData, JSON.stringify(cart), (err) => {});
     });
@@ -46,13 +48,28 @@ module.exports = class Cart {
       const updatedCart = { ...cart };
 
       const productToDelete = updatedCart.products.find((p) => p.id === id);
+      if (!productToDelete) {
+        return;
+      }
       const productToDeleteQty = productToDelete.qty;
 
       updatedCart.products = updatedCart.products.filter((p) => p.id !== id);
       updatedCart.totalPrice =
         updatedCart.totalPrice - price * productToDeleteQty;
+      updatedCart.totalPrice = getFormattedPrice(updatedCart.totalPrice);
 
       fs.writeFile(pathToCartData, JSON.stringify(updatedCart), (err) => {});
+    });
+  }
+
+  static getCart(cb) {
+    fs.readFile(pathToCartData, (err, fileContent) => {
+      try {
+        const cart = JSON.parse(fileContent);
+        cb(cart);
+      } catch (err) {
+        cb(null);
+      }
     });
   }
 };

@@ -25,3 +25,22 @@
 .product__description {
   text-align: center;
 }
+
+.cart-product {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.cart-product-title {
+  padding: 10px;
+  margin: 0;
+}
+.cart-product-image {
+
+}
+.cart-product-qty {
+  padding: 10px;
+}
