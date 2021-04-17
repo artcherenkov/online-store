@@ -27,4 +27,4 @@ db.execute("SELECT * FROM products")
     console.log(err);
   });
 
-app.listen(3000);
+app.listen(3001);
