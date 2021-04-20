@@ -10,9 +10,7 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.postAddProduct = (req, res) => {
-  const product = new Product(req.body);
-  product
-    .save()
+  Product.create({ ...req.body })
     .then(() => res.redirect("/"))
     .catch((err) => console.log(err));
 };
@@ -49,11 +47,13 @@ exports.postDeleteProduct = (req, res) => {
 };
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll((products) => {
-    res.render("admin/product-list", {
-      products,
-      pageTitle: "Admin products",
-      path: "/admin/products",
-    });
-  });
+  Product.findAll()
+    .then((products) => {
+      res.render("admin/product-list", {
+        products,
+        pageTitle: "Admin products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => console.log(err));
 };
