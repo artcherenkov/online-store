@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const { updateInstance } = require("../utils/common");
 
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
@@ -22,28 +23,38 @@ exports.getEditProduct = (req, res) => {
   }
 
   const productId = req.params.productId;
-  Product.fetchById(productId, (product) => {
-    if (!product) {
-      return res.redirect("/");
-    }
-    res.render("admin/edit-product", {
-      pageTitle: "Edit product",
-      path: "",
-      product,
-      editing: true,
-    });
-  });
+  Product.findByPk(productId)
+    .then((product) => {
+      if (!product) {
+        return res.redirect("/");
+      }
+      res.render("admin/edit-product", {
+        pageTitle: "Edit product",
+        path: "",
+        product,
+        editing: true,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postEditProduct = (req, res) => {
-  const product = new Product(req.body);
-  product.save(product);
-  res.redirect("/");
+  const productId = req.body.id;
+  Product.findByPk(productId)
+    .then((product) => {
+      product = updateInstance(product, req.body);
+      return product.save();
+    })
+    .then(() => res.redirect("/"))
+    .catch((err) => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res) => {
-  Product.deleteById(req.body.id);
-  res.redirect("/");
+  const productId = req.body.id;
+  Product.findByPk(productId)
+    .then((product) => product.destroy())
+    .then(() => res.redirect("/"))
+    .catch((err) => console.log(err));
 };
 
 exports.getProducts = (req, res) => {
